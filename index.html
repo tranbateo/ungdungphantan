@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Biểu đồ thời tiết</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h2>🌤️ Biểu đồ thời tiết 1 giờ gần nhất</h2>
+  <canvas id="weatherChart" width="800" height="400"></canvas>
+
+  <script>
+    async function drawChart() {
+      const res = await fetch('/api/weather-data');
+      const data = await res.json();
+
+      const ctx = document.getElementById('weatherChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.timestamps,
+          datasets: [
+            {
+              label: 'Nhiệt độ (°C)',
+              data: data.temperature,
+              borderColor: 'red',
+              fill: false
+            },
+            {
+              label: 'Độ ẩm (%)',
+              data: data.humidity,
+              borderColor: 'blue',
+              fill: false
+            },
+          
+          ]
+        }
+      });
+    }
+
+    drawChart();
+  </script>
+</body>
+</html>
